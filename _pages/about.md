@@ -3,6 +3,4 @@ permalink: /about/
 title: "关于"
 ---
 
-Tempor velit sint sunt ipsum tempor enim ad qui ullamco. Est dolore anim ad velit duis dolore minim sunt aliquip amet commodo labore. Ut eu pariatur aute ea aute excepteur laborum. Esse ea esse excepteur minim mollit qui cillum excepteur ex dolore magna. Labore deserunt fugiat incididunt incididunt sint ea. Consequat dolore aute laboris quis proident quis non et est consectetur ex eiusmod sit culpa.
-
-Cupidatat ea do et in excepteur in. Ad nostrud ut est esse eu duis ea sunt eiusmod. Aliquip tempor veniam sint elit fugiat. Velit incididunt laboris amet incididunt labore dolore irure velit excepteur commodo deserunt laborum. Consectetur eu fugiat veniam veniam Lorem labore magna eiusmod. Ea occaecat reprehenderit pariatur consectetur minim labore ut aliquip.
+这个站点主要是为了记录在工作中的搜索，以收藏代码为主。之前一个问题总是重复查找解决方案，折腾得有点累，不如花点时间记录站点和自己的修改。同时，也希望自己养成文字记录的习惯。由于代码能力不强，都是参考其他站点的[Demo](https://mmistakes.github.io/minimal-mistakes/)
