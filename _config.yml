@@ -15,7 +15,7 @@
 # in the templates via {{ site.myvariable }}.
 
 locale: "zh"
-title: wiki的Blog
+title: Blog首页
 email:
 description              : &description "Wiki's blog and  work record!"
 twitter_username: wikiliu
@@ -57,7 +57,7 @@ plugins:
   - jekyll-include-cache
 
 author:
-  name   : "First Lastname"
+  name   : "Wiki Liu"
   avatar : "b228d539b6003af3b716d6be382ac65c1238b6bf.jpg"
   bio    : "My awesome biography constrained to a sentence or two goes here."
   links:
