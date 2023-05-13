@@ -16,7 +16,6 @@
 
 locale: "zh"
 title: Blog首页
-email:
 description              : &description "Wiki's blog and work record!"
 twitter_username: wikiliu
 github_username: wikiliu
@@ -60,6 +59,7 @@ author:
   name   : "Wiki Liu"
   avatar : "b228d539b6003af3b716d6be382ac65c1238b6bf.jpg"
   bio    : "随便玩玩咯~"
+  email: "1307996390lwj@gmail.com"
   links:
     - label: "Website"
       icon: "fas fa-fw fa-link"
