@@ -17,7 +17,7 @@
 locale: "zh"
 title: Blog首页
 email:
-description              : &description "Wiki's blog and  work record!"
+description              : &description "Wiki's blog and work record!"
 twitter_username: wikiliu
 github_username: wikiliu
 minimal_mistakes_skin: dark
