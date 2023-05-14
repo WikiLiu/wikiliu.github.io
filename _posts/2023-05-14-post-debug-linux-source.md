@@ -125,4 +125,4 @@ qemu-system-x86_64 -kernel ./arch/x86/boot/bzImage -initrd ./initrd.img -append 
 qemu-system-x86_64 -kernel ./arch/x86/boot/bzImage -initrd ./initrd.img -append "root=/dev/ram console=ttyS0" -nographic
 ```
 
->这篇文章参考https://juejin.cn/post/7160349299401277476，但是在gcc版本上做了修改，避免了对改源码。另外，这个文件目录是我唯一成功的一次，源码文件夹下保存着rootrf
+>这篇文章参考<https://juejin.cn/post/7160349299401277476>，但是在gcc版本上做了修改，避免了对改源码。另外，这个文件目录是我唯一成功的一次，源码文件夹下保存着rootrf
