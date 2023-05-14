@@ -88,7 +88,7 @@ defaults:
       share: true
       related: true
       sidebar:
-        nav: "docs"
+        nav: "sidebar-sample"
   # _pages
   - scope:
       path: "_pages"
