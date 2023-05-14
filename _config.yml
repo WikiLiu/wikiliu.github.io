@@ -16,6 +16,7 @@
 
 locale: "zh"
 title: Blog首页
+favicon: icons8-home-100.png # 网站 logo 图片路径，可以是相对或绝对路径
 logo: icons8-home-100.png # 网站 logo 图片路径，可以是相对或绝对路径
 description              : &description "Wiki's blog and work record!"
 twitter_username: wikiliu
