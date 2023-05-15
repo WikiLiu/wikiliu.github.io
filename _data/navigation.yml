@@ -7,6 +7,8 @@ main:
     url: /tags/
   - title: "关于"
     url: /about/
+  - title: "BUG"
+    url: /bug/
     
 sidebar-sample:
   - title: "Parent Page A"
