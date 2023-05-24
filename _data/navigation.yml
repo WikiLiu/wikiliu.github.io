@@ -5,12 +5,16 @@ main:
     url: /categories/
   - title: "标签"
     url: /tags/
+  - title: "链接"
+    url: /link/
+  - title: "项目"
+    url: /docs/quick-start-guide/
   - title: "关于"
     url: /about/
   - title: "BUG"
     url: /bug/
     
-sidebar-sample:
+docs:
   - title: "Parent Page A"
     children:
       - title: "Child Page A1"
