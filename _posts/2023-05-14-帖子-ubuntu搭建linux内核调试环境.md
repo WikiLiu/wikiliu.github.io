@@ -6,7 +6,7 @@ categories:
 tags:
     - 收藏
     - 代码
-    - linux
+    - Linux
 toc: true
 ---    
 
