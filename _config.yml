@@ -18,7 +18,7 @@ locale: "zh"
 title: Blog首页
 favicon: "/assets/images/home.png" # 网站 logo 图片路径，可以是相对或绝对路径
 logo: "/assets/images/home.png" # 网站 logo 图片路径，可以是相对或绝对路径
-description              : &description "Wiki's blog and work record!"
+description: &description "Wiki's blog and work record!"
 twitter_username: wikiliu
 github_username: wikiliu
 minimal_mistakes_skin: dark
@@ -89,7 +89,7 @@ defaults:
       type: posts
     values:
       layout: single
-      author_profile: true
+      author_profile: false
       read_time: true
       comments: true
       share: true
@@ -120,3 +120,4 @@ category_archive:
 tag_archive:
   type: liquid
   path: /tags/
+
