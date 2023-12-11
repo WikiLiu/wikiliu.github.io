@@ -1,12 +1,14 @@
 ---
 title: "Opengl中Stencil testing的理解"
 last_modified_at: 2023-07-18
+classes: wide
 categories:
     - 帖子
 tags:  
     - Opengl
     - Graphics
 toc: true
+toc_sticky: true
 ---
 
 在LearnOpenGL中，Stencil testing的部分，但是我在看的时候，发现有那三个函数不是很理解，所以就在这里记录一下。

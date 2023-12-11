@@ -1,6 +1,7 @@
 ---
 title: "BUG: pacman清理孤包异常"
 last_modified_at: 2023-05-15
+classes: wide
 categories:
     - BUG
 tags:
@@ -8,6 +9,7 @@ tags:
     - arch
     - pacman
 toc: true
+toc_sticky: true
 ---    
 
 

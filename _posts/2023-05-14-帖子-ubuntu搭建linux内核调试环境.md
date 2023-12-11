@@ -1,6 +1,7 @@
 ---
 title: "帖子: Ubuntu搭建Linux 2.6.24内核调试环境"
 last_modified_at: 2023-05-14
+classes: wide
 categories:
     - 收藏
 tags:
@@ -8,6 +9,7 @@ tags:
     - 代码
     - Linux
 toc: true
+toc_sticky: true
 ---    
 
 
