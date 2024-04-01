@@ -45,7 +45,7 @@
 
 
 
-## （可选）wsl
+## （可选）wsl环境配置
 
 ### 
 	usbip usb-win kernel
@@ -64,18 +64,17 @@
 
 
 
-### 执行步骤
+### 执行步骤 wsl为例子
 * remote开机
 * window共享usb `usbipd  attach --wsl Ubuntu-20.04 --busid 1-5`
 * wsl分离串口 `~/Download/agent-proxy-1.97$ ./agent-proxy 5550^5551 0 /dev/ttyUSB0,115200`
-* gdb vmlinux
-
+* 	gdb vmlinux
 	target remote /dev/ttyUSB0
 	lx-symbols /home/rickliu/debug-kernel/linux-5.4.0/arise_kernel
 	continue
 	
 	
-	gdb -ex "file vmlinux" -ex "  target remote /dev/ttyUSB0" -ex "lx-symbols /home/rickliu/debug-kernel/linux-5.4.0/arise_kernel" -ex "continue"
+>>	gdb -ex "file vmlinux" -ex "  target remote /dev/ttyUSB0" -ex "lx-symbols /home/rickliu/debug-kernel/linux-5.4.0/arise_kernel" -ex "continue"
 	
 	
 	sudo modprobe drm
@@ -90,6 +89,7 @@
 	
 	
 tips：`sudo stty -F /dev/ttyUSB0 115200`  # deal with Ignoring packet error, continuing...
+tips: python加载gdb脚本可能会报UL错，grep -nr 1UL把所有UL去掉
 	 
 
 
