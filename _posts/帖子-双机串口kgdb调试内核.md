@@ -1,114 +1,168 @@
-[toc]
-# 双物理机使用kgdb调试内核和内核模块
+# 双物理机kgdb串口调试内核和内核模块
 
 ## 设备条件
-1. 两台物理机，最好系统版本相同或接近。运行内核的叫target机，打开gdb的叫host。我这里用的ubuntu20.04，gdb版本9.1
+
+1. 两台物理机，最好系统版本相同或接近。target机运行内核，host机打开gdb。我这里用的ubuntu20.04 + wsl，gdb版本9.1
 2. 串口线，预先知道串口号，例如 /dev/ttyS0 /dev/ttyS1
 
-## 编译内核 target主机上
-1. 当前内核配置可以从 /boot/$(uname -r)-config 中看到。ubuntu和debian编译默认开启了kgdb和debug info。重新编译内核是为了获得vmlinux及符号信息。
-2. 在ubuntu下有两种方式编译内核，推荐第一种： 
-### （一）
-```Shell
-    mkdir ~/debug-kernel; 
-    cd debug-kernel;
-    apt source linux;
-    cd linux-5.4.0;
-    #这一步不是必须 通常默认都是好的 建议check一下 make menucofigure <frame-point debug_info KGDB>
-    dpkg-buildpackage -b; #这里如果缺少build库可以执行 sudo apt build-dep linux
-```
+## 编译内核 <target主机>
 
-等待很久后，在~/debug-kernel中有linux-header*、linux-image*-deb、linux-image-*-dbg-deb、linux-libc四个包  #这里最好把source(~/debug-kernel)拷贝到host主机上
+当前内核配置在 /boot/$(uname -r)-config，ubuntu和debian编译默认开启了kgdb和debug info。重新编译内核是为了获得vmlinux及符号信息。
+   
+在ubuntu下有两种方式编译内核，推荐第一种：
+
+##### 一、
 
 ```Shell
-    sudo dpkg -i linux-image*-deb linux-image-*-dbg-deb linux-header*
+mkdir ~/debug-kernel;
+cd debug-kernel
+apt source linux
+cd linux-5.4.0
+#建议check一下 make menucofigure <frame-point debug_info KGDB>
+sudo apt build-dep linux
+dpkg-buildpackage -b
 ```
-### （二）
+
+等待很久后，在~/debug-kernel中有linux-header*、linux-image*-deb、linux-image-*-dbg-deb、linux-libc四个包  
+然后安装：
+
 ```Shell
-    sudo apt search source   # 查看源
-    sudo apt install linux-source-* # 选择一个跟原来版本最接近的就行
-    cd /usr/src/linux-source-* ;
-    su
-    make menuconfigure
-    make -j12
-    make modules_install
-    make install
-    update-grub
+sudo dpkg -i linux-image*-deb linux-image-*-dbg-deb linux-header*
 ```
 
-### 更改grub启动参数
+##### 二、
 
+```Shell
+sudo apt search source | grep linux-source-  # 查看源
+sudo apt install linux-source-* # 选择一个跟原来版本最接近的就行
+cd /usr/src/linux-source-* ;
+su
+make menuconfigure #修改配置参数 可以直接 拷贝/boot的配置文件到源码目录，重命名为.config
+make -j12
+make modules_install
+make install
+update-grub
+```
 
-### 拷贝生成的vmlinux到host主机
+最后，直接把source-code目录(例如方法一：~/debug-kernel)拷贝到host主机上，一定保证路径一致！！！
 
+### taget编译显卡kernel module
 
+cmake或者make时添加debug参数，build完成后一定得拷贝到host主机且保持目录一致（可以直接放在linux目录下编）
 
+## 调试内核
 
+### 1.更改grub启动参数
+
+> 最好通过default/grub改，直接改/boot路径可能会被覆盖
+
+```Shell
+vim  /etc/default/grub
+```
+
+替换一行：
+
+```Shell
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash nokaslr console=tty0 console=ttyS0,115200n  kgdbcon kgdboc=ttyS0,115200"
+```
+
+如果需要断在load kernel阶段则（kgdbwait让kgdb阻塞并等待host连接）：
+
+```Shell
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash nokaslr console=tty0 console=ttyS0,115200n kgdbwait kgdbcon kgdboc=ttyS0,115200 "
+```
+
+### 2.target主机开机，等待gdb连接
+
+### 3.host主机启动gdb：
+
+```Shell
+cd /your/path/debug-kernel/linux-5.4.0
+gdb -ex "file vmlinux" -ex "target remote /dev/ttyUSB0" -ex "lx-symbols /your/driver/path/arise_kernel" -ex "b wanna_debug_founction" -ex "continue" #修改为合适参数
+```
+
+然后调试driver（假设driver module没有加载）：
+
+```Shell
+sudo modprobe drm
+sudo modprobe drm_kms_helper 
+sudo insmod /your/driver/path/arise_pro.ko 
+sudo systemctl start gdm3 
+```
+
+想要随时停住target，在终端输入：
+
+```Shell
+echo g > /proc/sysrq-trigger 
+```
+
+此时host主机gdb可以输入gdb断点、目录、符号等命令
+
+> tips: gdb启动vmlinux加载python脚本时可能会报UL错，grep -nr 1UL把所有UL去掉即可
+
+## （可选）host机vscode
+
+```Shell
+cd /your/path/debug-kernel/linux-5.4.0
+mkdir .vscode
+cd .vscode
+vim launch.json
+```
+
+然后粘贴（注意替换路径）：
+
+```Json
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+        "name": "(gdb) linux",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "/your/path/debug-kernel/linux-5.4.0/vmlinux",
+        "miDebuggerServerAddress": "/dev/ttyUSB0",
+        "args": [],
+        "stopAtEntry": true,
+        "cwd": "${workspaceFolder}",
+        "environment": [],
+        "externalConsole": false,
+        "MIMode": "gdb",
+        "miDebuggerArgs": "-n",
+        "targetArchitecture": "x64",
+        "sourceFileMap":{"/your/path/debug-kernel/linux-5.4.0": "${workspaceFolder}"},
+        "setupCommands": [
+            {"text": "set arch i386:x86-64:intel", "ignoreFailures": false},
+            {"text": "dir .","ignoreFailures": false},
+            {"text": "add-auto-load-safe-path ./","ignoreFailures": false},
+            {"text": "-enable-pretty-printing","ignoreFailures": true},
+            {"text": "set breakpoint pending on"}
+            ]
+            }
+            ]
+}
+```
 
 ## （可选）wsl环境配置
 
-### 
-	usbip usb-win kernel
-###
-	pl2303 agent-proxy
-### [!拷贝到wsl](https://learn.microsoft.com/zh-cn/windows/wsl/wsl2-mount-disk)
-	GET-CimInstance -query "SELECT * from Win32_DiskDrive"
-	wsl --mount <DiskPath> --bare
-	lsblk  #Get PartitionNumber
-	
-	wsl --mount <DiskPath> --partition <PartitionNumber> --type <Filesystem>
-## （可选）vscode
+win工具包：usbip usb-win kernel（如果wsl内核缺少pl2303模块就编一个）
 
+串口包：pl2303 agent-proxy
 
+window共享usb串口到wsl `usbipd  attach --wsl Ubuntu-20.04 --busid 1-5`
 
+wsl分离串口 `~/Download/agent-proxy-1.97$ ./agent-proxy 5550^5551 0 /dev/ttyUSB0,115200`
 
+> tips：报错deal with Ignoring packet error, continuing...
+> `sudo stty -F /dev/ttyUSB0 115200`
 
+### 快速[拷贝ext4硬盘数据到wsl](https://learn.microsoft.com/zh-cn/windows/wsl/wsl2-mount-disk)
 
-### 执行步骤 wsl为例子
-* remote开机
-* window共享usb `usbipd  attach --wsl Ubuntu-20.04 --busid 1-5`
-* wsl分离串口 `~/Download/agent-proxy-1.97$ ./agent-proxy 5550^5551 0 /dev/ttyUSB0,115200`
-* 	gdb vmlinux
-	target remote /dev/ttyUSB0
-	lx-symbols /home/rickliu/debug-kernel/linux-5.4.0/arise_kernel
-	continue
-	
-	
->>	gdb -ex "file vmlinux" -ex "  target remote /dev/ttyUSB0" -ex "lx-symbols /home/rickliu/debug-kernel/linux-5.4.0/arise_kernel" -ex "continue"
-	
-	
-	sudo modprobe drm
-	sudo modprobe drm_kms_helper
-	sudo insmod /home/rickliu/debug-kernel/linux-5.4.0/arise_kernel/arise_pro.ko
-	sleep 3
-	sudo systemctl stop gdm3
-	sudo rmmod arise_pro
-	echo g > /proc/sysrq-trigger    # b 
-	sudo insmod /home/rickliu/debug-kernel/linux-5.4.0/arise_kernel/arise_pro.ko
-	
-	
-	
-tips：`sudo stty -F /dev/ttyUSB0 115200`  # deal with Ignoring packet error, continuing...
-tips: python加载gdb脚本可能会报UL错，grep -nr 1UL把所有UL去掉
-	 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-###
-
-
-    
-    
- 
-    
+```PowerShell
+GET-CimInstance -query "SELECT * from Win32_DiskDrive"
+wsl --mount <DiskPath> --bare
+lsblk  #Get PartitionNumber
+wsl --mount <DiskPath> --partition <PartitionNumber> --type <Filesystem>
+```
