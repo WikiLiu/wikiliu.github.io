@@ -11,7 +11,7 @@ tags:
 
 buildroot可以编一个精简操作系统或者交叉编译binary
 
-详细文档见[bootlin](https://bootlin.com/doc/training/buildroot/buildroot-slides.pdf)
+详细文档见[bootlin](httpsi://bootlin.com/doc/training/buildroot/buildroot-slides.pdf)
 
 ## 系统结构
 
