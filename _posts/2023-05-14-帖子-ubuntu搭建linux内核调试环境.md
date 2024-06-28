@@ -78,10 +78,10 @@ mount -o loop initrd.img rootfs
 # 5. 编译busybox
 cd busybox-1.21.1
 make -j4
-make CONFIG_PREFIX=../rootfs install
+make CONFIG_PREFIX=/rootfs install
 
 # 6. 安装完成，补充一些必要的文件和目录
-cd ../rootfs
+cd /rootfs
 mkdir etc proc dev home mnt tmp sys
 mkdir etc/init.d
 
