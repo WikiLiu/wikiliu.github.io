@@ -5,9 +5,9 @@ classes: wide
 categories:
     - BUG
 tags:
-    - bug
-    - arch
-    - pacman
+    - BUG
+    - ARCH
+    - PACMAN
 toc: true
 toc_sticky: true
 ---    

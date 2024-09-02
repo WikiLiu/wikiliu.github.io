@@ -5,8 +5,8 @@ classes: wide
 categories:
   - 收藏
 tags:
-  - Linux
-  - Embedded
+  - LINUX
+  - EMBEDDED
 ---
 
 buildroot可以编一个精简操作系统或者交叉编译binary

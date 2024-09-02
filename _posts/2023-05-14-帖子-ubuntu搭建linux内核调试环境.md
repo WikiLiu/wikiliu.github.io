@@ -7,7 +7,7 @@ categories:
 tags:
     - 收藏
     - 代码
-    - Linux
+    - LINUX
 toc: true
 toc_sticky: true
 ---    

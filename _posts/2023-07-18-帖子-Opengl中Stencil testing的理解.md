@@ -5,8 +5,8 @@ classes: wide
 categories:
     - 帖子
 tags:  
-    - Opengl
-    - Graphics
+    - OPENGL
+    - GRAPHICS
 toc: true
 toc_sticky: true
 ---
